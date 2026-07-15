@@ -1,26 +1,34 @@
-# Mars Landscape 3D
+# 🚀 Mars Landscape 3D
 
-A 3D Mars exploration game developed using Unity.  
-The project features player movement, character animations, collisions, a sci-fi environment, collectible energy cells, and a dynamic score system.
+A Unity 6 third-person exploration game set on the surface of Mars.
 
-## Features
+The player explores a futuristic Mars environment, collects Energy Cells to increase their energy and score, and experiences smooth third-person movement with character animations, collision detection, and an interactive UI.
 
-- Third-person player movement
-- Walking, running, jumping, and idle animations
-- Camera follow system
-- Mars-themed 3D environment
-- Sci-fi skybox
-- Character Controller and collision system
-- Energy Cell collectibles
-- Dynamic Energy counter
-- Dynamic Score counter
-- Rotating and floating collectibles
-- Unity UI Canvas using TextMeshPro
+---
 
-## Controls
+# 📷 Gameplay Features
+
+- 🌌 Beautiful Mars landscape environment
+- 👤 Third-Person Character Controller
+- 🚶 Smooth Walking Animation
+- 🏃 Running Animation
+- 🛑 Idle Animation
+- 🦘 Jump System
+- 🎥 Third-Person Follow Camera
+- 🪨 Terrain & Rock Collision
+- 🔋 Collectible Energy Cells
+- 🔄 Floating & Rotating Collectibles
+- ⚡ Energy Counter UI
+- 🏆 Score Counter UI
+- 🖥️ TextMeshPro User Interface
+- 🎮 Camera Relative Movement
+
+---
+
+# 🎮 Controls
 
 | Action | Key |
-|---|---|
+|---------|-----|
 | Move Forward | W |
 | Move Backward | S |
 | Move Left | A |
@@ -28,78 +36,188 @@ The project features player movement, character animations, collisions, a sci-fi
 | Run | Left Shift |
 | Jump | Space |
 
-## Gameplay
+---
 
-The player explores the Mars environment and collects Energy Cells placed around the map.
+# 🛠️ Technologies
 
-Each collected Energy Cell:
+- Unity 6 (6000.3)
+- C#
+- Universal Render Pipeline (URP)
+- TextMeshPro
+- Character Controller
+- Unity Physics
+- Git
+- GitHub
 
-- Increases Energy by 1
-- Increases Score by 10
-- Disappears after collection
+---
 
-## Project Structure
+# 📂 Project Structure
 
-```text
-Assets/
-Packages/
-ProjectSettings/
+```
+Assets
+│
+├── Animations
+├── Characters
+├── Mars Landscape 3D
+├── Scenes
+├── Scripts
+├── TextMeshPro
+└── Settings
 
-Unity-generated folders such as Library, Temp, Logs, and UserSettings are excluded using .gitignore.
+Packages
 
-Technologies
-Unity 6
-C#
-TextMeshPro
-Universal Render Pipeline
-Git and GitHub
-How to Run
-Clone the repository:
-git clone https://github.com/YOUR_USERNAME/Mars-Landscape-3D.git
-Open Unity Hub.
-Click Add Project from Disk.
-Select the cloned project folder.
-Open the main scene.
-Press the Play button.
-Main Scripts
-PlayerMovement
+ProjectSettings
+```
 
-Handles:
+---
 
-Camera-relative movement
-Walking and running
-Player rotation
-Jumping and gravity
-Animator parameters
-CameraFollow
+# ⚡ Gameplay
 
-Makes the main camera follow the player smoothly.
+The player explores the Mars environment while collecting futuristic **Energy Cells**.
 
-EnergyCollectable
+Each Energy Cell:
 
-Handles:
+- Rotates continuously.
+- Floats up and down.
+- Detects the player using Trigger Colliders.
+- Increases the player's Energy.
+- Increases the player's Score.
+- Disappears after being collected.
 
-Collectible rotation
-Floating movement
-Player detection
-Energy and score rewards
-Destroying the collectible after collection
-GameManager
+---
 
-Handles:
+# 🧠 Scripts
 
-Energy count
-Score count
-Updating the UI
-Task Requirements Completed
-Created a UI Canvas containing collectible and score counts
-Linked UI elements with C# scripts
-Added collectible Energy Cells
-Added player interaction with collectibles
-Uploaded the Unity project to GitHub using a Unity .gitignore
-Author
+## PlayerMovement.cs
 
-Nour Hossam
+Responsible for:
 
-GitHub: nour-hossam7
-LinkedIn: Nour Hossam
+- Character movement
+- Camera-relative movement
+- Walking
+- Running
+- Jumping
+- Gravity
+- Character rotation
+- Animator control
+
+---
+
+## CameraFollow.cs
+
+Responsible for:
+
+- Following the player
+- Smooth camera movement
+- Third-person gameplay
+
+---
+
+## EnergyCollectable.cs
+
+Responsible for:
+
+- Floating animation
+- Rotation animation
+- Trigger detection
+- Increasing Energy
+- Increasing Score
+- Destroying the collectible
+
+---
+
+## GameManager.cs
+
+Responsible for:
+
+- Managing Energy
+- Managing Score
+- Updating the UI
+- Displaying game statistics
+
+---
+
+# ✅ Completed Features
+
+- Third-person movement
+- Character animations
+- Jump mechanic
+- Character Controller
+- Camera follow
+- Terrain collision
+- Rock collision
+- Collectible system
+- Energy system
+- Score system
+- UI Canvas
+- TextMeshPro
+- Git version control
+- GitHub repository
+
+---
+
+# ▶️ How to Run
+
+1. Clone the repository.
+
+```bash
+git clone https://github.com/nour-hossam7/Mars-Landscape-3D.git
+```
+
+2. Open **Unity Hub**.
+
+3. Click **Add Project From Disk**.
+
+4. Select the cloned project.
+
+5. Open the main scene.
+
+6. Press **Play**.
+
+---
+
+# 📸 Screenshots
+
+> Add gameplay screenshots here after uploading the project.
+
+Example:
+
+```
+Screenshots/
+├── gameplay1.png
+├── gameplay2.png
+└── gameplay3.png
+```
+
+---
+
+# 📌 Future Improvements
+
+- Health System
+- Enemy AI
+- Energy Bar
+- Mission Objectives
+- Sound Effects
+- Background Music
+- Particle Effects
+- Checkpoints
+- Save System
+- Mini Map
+
+---
+
+# 👩‍💻 Author
+
+**Nour Hossam**
+
+GitHub:
+https://github.com/nour-hossam7
+
+LinkedIn:
+https://www.linkedin.com/in/nour-hossam7/
+
+---
+
+# ⭐ Repository
+
+If you like this project, don't forget to give it a ⭐ on GitHub!
