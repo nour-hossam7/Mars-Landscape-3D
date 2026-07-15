@@ -216,8 +216,3 @@ https://github.com/nour-hossam7
 LinkedIn:
 https://www.linkedin.com/in/nour-hossam7/
 
----
-
-# ⭐ Repository
-
-If you like this project, don't forget to give it a ⭐ on GitHub!
