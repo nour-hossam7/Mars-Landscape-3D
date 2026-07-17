@@ -12,7 +12,7 @@ public class EnergyCollectable : MonoBehaviour
     [SerializeField] private float floatingSpeed = 2f;
 
     private Vector3 startPosition;
-    private bool collected;
+    private bool collected = false;
 
     private void Start()
     {
@@ -63,6 +63,10 @@ public class EnergyCollectable : MonoBehaviour
                 energyValue,
                 scoreValue
             );
+        }
+        else
+        {
+            Debug.LogWarning("GameManager Instance was not found.");
         }
 
         Destroy(gameObject);
