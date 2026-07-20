@@ -33,9 +33,6 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
         Vector3 currentAngles = transform.eulerAngles;
         yaw = currentAngles.y;
     }
@@ -128,8 +125,8 @@ public class CameraFollow : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+           // Cursor.lockState = CursorLockMode.Locked;
+           // Cursor.visible = false;
         }
     }
 }

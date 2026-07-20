@@ -147,6 +147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnergyCollectable
   energyValue: 1
   scoreValue: 10
+  collectSound: {fileID: 8300000, guid: c235697ceeaffb24ca7b965f1c3d07f4, type: 3}
+  collectVolume: 1
   rotationSpeed: 60
   floatingHeight: 0.15
   floatingSpeed: 2

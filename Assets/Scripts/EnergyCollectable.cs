@@ -6,13 +6,17 @@ public class EnergyCollectable : MonoBehaviour
     [SerializeField] private int energyValue = 1;
     [SerializeField] private int scoreValue = 10;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip collectSound;
+    [SerializeField, Range(0f, 1f)] private float collectVolume = 1f;
+
     [Header("Visual Movement")]
     [SerializeField] private float rotationSpeed = 60f;
     [SerializeField] private float floatingHeight = 0.15f;
     [SerializeField] private float floatingSpeed = 2f;
 
     private Vector3 startPosition;
-    private bool collected = false;
+    private bool collected;
 
     private void Start()
     {
@@ -64,9 +68,14 @@ public class EnergyCollectable : MonoBehaviour
                 scoreValue
             );
         }
-        else
+
+        if (collectSound != null)
         {
-            Debug.LogWarning("GameManager Instance was not found.");
+            AudioSource.PlayClipAtPoint(
+                collectSound,
+                transform.position,
+                collectVolume
+            );
         }
 
         Destroy(gameObject);
