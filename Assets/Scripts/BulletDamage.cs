@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class BulletDamage : MonoBehaviour
 {
+    [Header("Bullet Settings")]
     [SerializeField] private int damage = 20;
+
+    [Header("Effects")]
     [SerializeField] private GameObject impactEffect;
 
     private void OnCollisionEnter(Collision collision)
     {
+      
         if (impactEffect != null)
         {
             ContactPoint contact = collision.contacts[0];
@@ -20,6 +24,7 @@ public class BulletDamage : MonoBehaviour
             Destroy(effect, 2f);
         }
 
+      
         Health targetHealth = collision.gameObject.GetComponent<Health>();
 
         if (targetHealth != null)
@@ -27,6 +32,7 @@ public class BulletDamage : MonoBehaviour
             targetHealth.TakeDamage(damage);
         }
 
+      
         Destroy(gameObject);
     }
 }

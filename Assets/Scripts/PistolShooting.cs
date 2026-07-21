@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class PistolShooting : MonoBehaviour
@@ -7,6 +8,8 @@ public class PistolShooting : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
     [SerializeField] private Camera aimCamera;
+    [SerializeField] private TMP_Text ammoText;
+    [SerializeField] private ParticleSystem muzzleFlash;
 
     [Header("Shooting Settings")]
     [SerializeField] private float bulletSpeed = 30f;
@@ -22,6 +25,7 @@ public class PistolShooting : MonoBehaviour
     private void Start()
     {
         currentAmmo = magazineSize;
+        UpdateAmmoUI();
     }
 
     private void Update()
@@ -43,8 +47,7 @@ public class PistolShooting : MonoBehaviour
             {
                 Shoot();
                 currentAmmo--;
-
-                Debug.Log("Ammo: " + currentAmmo);
+                UpdateAmmoUI();
             }
             else
             {
@@ -64,6 +67,11 @@ public class PistolShooting : MonoBehaviour
             return;
         }
 
+        if (muzzleFlash != null)
+        {
+            muzzleFlash.Play();
+        }
+
         Vector3 shootDirection = aimCamera.transform.forward;
 
         GameObject bullet = Instantiate(
@@ -81,7 +89,9 @@ public class PistolShooting : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("The Bullet Prefab does not have a Rigidbody.");
+            Debug.LogWarning(
+                "The Bullet Prefab does not have a Rigidbody."
+            );
         }
 
         Destroy(bullet, bulletLifetime);
@@ -96,13 +106,25 @@ public class PistolShooting : MonoBehaviour
 
         isReloading = true;
 
-        Debug.Log("Reloading...");
+        if (ammoText != null)
+        {
+            ammoText.text = "Reloading...";
+        }
 
         yield return new WaitForSeconds(reloadTime);
 
         currentAmmo = magazineSize;
         isReloading = false;
 
-        Debug.Log("Reload Complete! Ammo: " + currentAmmo);
+        UpdateAmmoUI();
+    }
+
+    private void UpdateAmmoUI()
+    {
+        if (ammoText != null)
+        {
+            ammoText.text =
+                "Ammo: " + currentAmmo + " / " + magazineSize;
+        }
     }
 }
