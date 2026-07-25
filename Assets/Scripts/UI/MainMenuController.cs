@@ -6,9 +6,13 @@ public class MainMenuController : MonoBehaviour
     [Header("Scene Settings")]
     [SerializeField] private string gameplaySceneName = "Gameplay";
 
-    [Header("UI References")]
+    [Header("Main Menu")]
     [SerializeField] private GameObject mainMenuUI;
+
+    [Header("Panels")]
     [SerializeField] private GameObject storyPanel;
+    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject creditsPanel;
 
     private void Start()
     {
@@ -17,28 +21,27 @@ public class MainMenuController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        CloseAllPanels();
+
         if (mainMenuUI != null)
         {
             mainMenuUI.SetActive(true);
-        }
-
-        if (storyPanel != null)
-        {
-            storyPanel.SetActive(false);
         }
     }
 
     public void OpenStory()
     {
-        if (mainMenuUI != null)
-        {
-            mainMenuUI.SetActive(false);
-        }
+        ShowPanel(storyPanel);
+    }
 
-        if (storyPanel != null)
-        {
-            storyPanel.SetActive(true);
-        }
+    public void OpenSettings()
+    {
+        ShowPanel(settingsPanel);
+    }
+
+    public void OpenCredits()
+    {
+        ShowPanel(creditsPanel);
     }
 
     public void StartGame()
@@ -49,10 +52,7 @@ public class MainMenuController : MonoBehaviour
 
     public void BackToMenu()
     {
-        if (storyPanel != null)
-        {
-            storyPanel.SetActive(false);
-        }
+        CloseAllPanels();
 
         if (mainMenuUI != null)
         {
@@ -67,5 +67,38 @@ public class MainMenuController : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    private void ShowPanel(GameObject panelToShow)
+    {
+        CloseAllPanels();
+
+        if (mainMenuUI != null)
+        {
+            mainMenuUI.SetActive(false);
+        }
+
+        if (panelToShow != null)
+        {
+            panelToShow.SetActive(true);
+        }
+    }
+
+    private void CloseAllPanels()
+    {
+        if (storyPanel != null)
+        {
+            storyPanel.SetActive(false);
+        }
+
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+
+        if (creditsPanel != null)
+        {
+            creditsPanel.SetActive(false);
+        }
     }
 }
