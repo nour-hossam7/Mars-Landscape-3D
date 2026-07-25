@@ -1,25 +1,23 @@
+# Unity generated folders
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
 [Bb]uild/
 [Bb]uilds/
-[Ll]ogs/
-UserSettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
 
+# IDE
 .vs/
-.vscode/
-
+.idea/
 *.csproj
 *.sln
+*.suo
 *.user
-*.unityproj
-*.pidb
-*.booproj
-*.svd
-*.pdb
-*.mdb
-*.opendb
-*.VC.db
-*.slnx
-sysinfo.txt
-crashlytics-build.properties
+*.userprefs
+
+# OS
+.DS_Store
+Thumbs.db

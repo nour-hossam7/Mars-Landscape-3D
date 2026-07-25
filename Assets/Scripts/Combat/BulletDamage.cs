@@ -2,44 +2,48 @@ using UnityEngine;
 
 public class BulletDamage : MonoBehaviour
 {
-    [Header("Bullet Settings")]
-    [SerializeField, Min(1)] private int damage = 20;
+    [SerializeField] private float damage = 25f;
+    [SerializeField] private float lifeTime = 5f;
 
-    [Header("Impact Effect")]
-    [SerializeField] private GameObject impactEffect;
-    [SerializeField, Min(0f)] private float impactEffectLifetime = 2f;
+    private bool hasHit;
+
+    private void Start()
+    {
+        Destroy(gameObject, lifeTime);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        CreateImpactEffect(collision);
-        ApplyDamage(collision);
-
-        Destroy(gameObject);
+        DamageTarget(collision.collider);
     }
 
-    private void ApplyDamage(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        IDamageable damageableTarget =
-            collision.collider.GetComponentInParent<IDamageable>();
-
-        damageableTarget?.TakeDamage(damage);
+        DamageTarget(other);
     }
 
-    private void CreateImpactEffect(Collision collision)
+    private void DamageTarget(Collider targetCollider)
     {
-        if (impactEffect == null || collision.contactCount == 0)
-        {
+        if (hasHit)
             return;
+
+        hasHit = true;
+
+        Debug.Log("Bullet hit: " + targetCollider.name);
+
+        BossHealth bossHealth =
+            targetCollider.GetComponentInParent<BossHealth>();
+
+        if (bossHealth != null)
+        {
+            Debug.Log("BossHealth found!");
+            bossHealth.TakeDamage(damage);
+        }
+        else
+        {
+            Debug.LogWarning("BossHealth was not found on hit object.");
         }
 
-        ContactPoint contact = collision.GetContact(0);
-
-        GameObject effect = Instantiate(
-            impactEffect,
-            contact.point,
-            Quaternion.LookRotation(contact.normal)
-        );
-
-        Destroy(effect, impactEffectLifetime);
+        Destroy(gameObject);
     }
 }
