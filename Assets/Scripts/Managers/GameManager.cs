@@ -25,12 +25,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject spiderGate;
 
     private TMP_Text scoreText;
+
     private bool spiderMissionUnlocked;
+    private bool gameEnded;
 
     public int Energy => energy;
     public int Score => score;
     public int MaxAlienEnergy => maxAlienEnergy;
     public bool SpiderMissionUnlocked => spiderMissionUnlocked;
+    public bool GameEnded => gameEnded;
 
     private void Awake()
     {
@@ -48,9 +51,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        FindGameplayReferences();
-        PrepareSpiderMission();
-        UpdateUI();
+        if (SceneManager.GetActiveScene().name == "Gameplay")
+        {
+            StartNewGameplayRun();
+        }
     }
 
     private void OnDestroy()
@@ -58,6 +62,7 @@ public class GameManager : MonoBehaviour
         if (Instance == this)
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+            Instance = null;
         }
     }
 
@@ -65,21 +70,61 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name == "Gameplay")
         {
-            FindGameplayReferences();
-            PrepareSpiderMission();
-            UpdateUI();
+            StartNewGameplayRun();
         }
+        else
+        {
+            ClearSceneReferences();
+        }
+    }
+
+    private void StartNewGameplayRun()
+    {
+        ResetRuntimeValues();
+        FindGameplayReferences();
+        PrepareSpiderMission();
+        UpdateUI();
+
+        Debug.Log("A new gameplay run has started.");
+    }
+
+    private void ResetRuntimeValues()
+    {
+        energy = 0;
+        score = 0;
+
+        spiderMissionUnlocked = false;
+        gameEnded = false;
+    }
+
+    private void ClearSceneReferences()
+    {
+        alienEnergyFill = null;
+        alienEnergyValueText = null;
+        scoreText = null;
+
+        spiderGuardianAI = null;
+        bossHealthUI = null;
+        spiderGate = null;
     }
 
     private void FindGameplayReferences()
     {
-        GameObject fillObject = GameObject.Find("AlienEnergyFill");
-        GameObject valueTextObject = GameObject.Find("AlienEnergyValueText");
-        GameObject scoreObject = GameObject.Find("ScoreText");
+        ClearSceneReferences();
+
+        GameObject fillObject =
+            GameObject.Find("AlienEnergyFill");
+
+        GameObject valueTextObject =
+            GameObject.Find("AlienEnergyValueText");
+
+        GameObject scoreObject =
+            GameObject.Find("ScoreText");
 
         if (fillObject != null)
         {
-            alienEnergyFill = fillObject.GetComponent<Image>();
+            alienEnergyFill =
+                fillObject.GetComponent<Image>();
         }
         else
         {
@@ -98,36 +143,60 @@ public class GameManager : MonoBehaviour
 
         if (scoreObject != null)
         {
-            scoreText = scoreObject.GetComponent<TMP_Text>();
+            scoreText =
+                scoreObject.GetComponent<TMP_Text>();
+        }
+
+        SpiderGuardianAI[] allSpiderAIs =
+            FindObjectsByType<SpiderGuardianAI>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None
+            );
+
+        foreach (SpiderGuardianAI spiderAI in allSpiderAIs)
+        {
+            if (spiderAI.gameObject.name == "SpiderGuardian")
+            {
+                spiderGuardianAI = spiderAI;
+                break;
+            }
         }
 
         if (spiderGuardianAI == null)
         {
-            spiderGuardianAI =
-                FindFirstObjectByType<SpiderGuardianAI>();
+            Debug.LogWarning(
+                "The main SpiderGuardian AI was not found."
+            );
         }
 
-        if (bossHealthUI == null)
+        bossHealthUI =
+            FindSceneObjectByName("BossHealthUI");
+
+        spiderGate =
+            FindSceneObjectByName("SpiderGate");
+    }
+
+    private GameObject FindSceneObjectByName(string objectName)
+    {
+        Transform[] allTransforms =
+            FindObjectsByType<Transform>(
+                FindObjectsInactive.Include,
+                FindObjectsSortMode.None
+            );
+
+        foreach (Transform currentTransform in allTransforms)
         {
-            bossHealthUI =
-                GameObject.Find("BossHealthUI");
+            if (currentTransform.gameObject.name == objectName)
+            {
+                return currentTransform.gameObject;
+            }
         }
 
-        if (spiderGate == null)
-        {
-            spiderGate =
-                GameObject.Find("SpiderGate");
-        }
+        return null;
     }
 
     private void PrepareSpiderMission()
     {
-        if (spiderMissionUnlocked)
-        {
-            ActivateSpiderMission();
-            return;
-        }
-
         if (spiderGuardianAI != null)
         {
             spiderGuardianAI.enabled = false;
@@ -146,13 +215,17 @@ public class GameManager : MonoBehaviour
 
     public void AddEnergy(int energyAmount, int scoreAmount)
     {
-        if (energyAmount <= 0)
+        if (gameEnded || energyAmount <= 0)
         {
             return;
         }
 
         energy += energyAmount;
-        energy = Mathf.Clamp(energy, 0, maxAlienEnergy);
+        energy = Mathf.Clamp(
+            energy,
+            0,
+            maxAlienEnergy
+        );
 
         score += Mathf.Max(0, scoreAmount);
 
@@ -162,20 +235,38 @@ public class GameManager : MonoBehaviour
 
     public void RemoveEnergy(int energyAmount)
     {
-        if (energyAmount <= 0)
+        if (gameEnded || energyAmount <= 0)
+        {
+            return;
+        }
+
+        /*
+         * قبل فتح مهمة الـ Boss اللاعب يبدأ بطاقة 0،
+         * لذلك لا يتم تشغيل Game Over في هذه المرحلة.
+         */
+        if (!spiderMissionUnlocked)
         {
             return;
         }
 
         energy -= energyAmount;
-        energy = Mathf.Clamp(energy, 0, maxAlienEnergy);
+        energy = Mathf.Clamp(
+            energy,
+            0,
+            maxAlienEnergy
+        );
 
         UpdateUI();
+
+        if (energy <= 0)
+        {
+            TriggerGameOver();
+        }
     }
 
     private void CheckEnergyMission()
     {
-        if (spiderMissionUnlocked)
+        if (spiderMissionUnlocked || gameEnded)
         {
             return;
         }
@@ -207,6 +298,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void TriggerGameOver()
+    {
+        if (gameEnded)
+        {
+            return;
+        }
+
+        gameEnded = true;
+        energy = 0;
+
+        UpdateUI();
+
+        /*
+         * عند الخسارة الطاقة أصبحت صفر،
+         * لذلك Final Score المعروض سيكون صفر.
+         */
+        PlayerPrefs.SetInt("FinalScore", 0);
+        PlayerPrefs.Save();
+
+        Debug.Log("Alien energy reached zero. Game Over!");
+
+        SceneManager.LoadScene("GameOver");
+    }
+
     private void UpdateUI()
     {
         if (alienEnergyFill != null)
@@ -230,13 +345,11 @@ public class GameManager : MonoBehaviour
 
     public void LoadGameplay()
     {
-        ResetGame();
         SceneManager.LoadScene("Gameplay");
     }
 
     public void RestartGame()
     {
-        ResetGame();
         SceneManager.LoadScene("Gameplay");
     }
 
@@ -247,10 +360,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadGameOver()
     {
-        PlayerPrefs.SetInt("FinalScore", score);
-        PlayerPrefs.Save();
-
-        SceneManager.LoadScene("GameOver");
+        TriggerGameOver();
     }
 
     public void ExitGame()
@@ -260,20 +370,5 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
-    }
-
-    private void ResetGame()
-    {
-        energy = 0;
-        score = 0;
-        spiderMissionUnlocked = false;
-
-        alienEnergyFill = null;
-        alienEnergyValueText = null;
-        scoreText = null;
-
-        spiderGuardianAI = null;
-        bossHealthUI = null;
-        spiderGate = null;
     }
 }
