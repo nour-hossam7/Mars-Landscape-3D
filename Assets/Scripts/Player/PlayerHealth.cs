@@ -4,22 +4,18 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Health")]
-    [SerializeField, Min(1)] private int maxHits = 3;
+    [Header("Damage")]
+    [SerializeField, Min(1)] private int energyDamagePerHit = 1;
 
     [Header("Game Over")]
     [SerializeField, Min(0f)] private float restartDelay = 1.5f;
 
-    private int currentHits;
     private bool isDead;
 
-    public int CurrentHits => currentHits;
-    public int RemainingHits => Mathf.Max(0, maxHits - currentHits);
     public bool IsDead => isDead;
 
     private void Awake()
     {
-        currentHits = 0;
         isDead = false;
     }
 
@@ -30,14 +26,26 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        currentHits += hitAmount;
+        if (GameManager.Instance == null)
+        {
+            Debug.LogWarning(
+                "GameManager Instance was not found.",
+                gameObject
+            );
+
+            return;
+        }
+
+        int totalDamage = hitAmount * energyDamagePerHit;
+
+        GameManager.Instance.RemoveEnergy(totalDamage);
 
         Debug.Log(
-            $"Player hit! Remaining hits: {RemainingHits}/{maxHits}",
+            $"Player hit! Energy remaining: {GameManager.Instance.Energy}",
             gameObject
         );
 
-        if (currentHits >= maxHits)
+        if (GameManager.Instance.Energy <= 0)
         {
             Die();
         }
@@ -52,7 +60,7 @@ public class PlayerHealth : MonoBehaviour
 
         isDead = true;
 
-        Debug.Log("Player lost! Restarting scene...", gameObject);
+        Debug.Log("Player energy reached zero!", gameObject);
 
         StartCoroutine(RestartSceneRoutine());
     }
