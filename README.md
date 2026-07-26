@@ -775,29 +775,6 @@ Then create a GitHub folder named:
 docs/images/
 ```
 
-Recommended screenshots:
-
-- Main Menu
-- Mission Briefing
-- Gameplay
-- First-person combat
-- Third-person view
-- Spider Guardian battle
-- Mini map
-- Game Over
-- Mission Complete
-
-Example Markdown:
-
-```markdown
-![Main Menu](docs/images/main-menu.png)
-![Gameplay](docs/images/gameplay.png)
-![Boss Battle](docs/images/boss-battle.png)
-![Mission Complete](docs/images/victory.png)
-```
-
----
-
 ## 👩‍💻 Developer
 
 <div align="center">
