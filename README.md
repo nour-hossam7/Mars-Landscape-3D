@@ -761,12 +761,6 @@ Mission Complete
 
 ---
 
-Then create a GitHub folder named:
-
-```text
-docs/images/
-```
-
 ## 👩‍💻 Developer
 
 <div align="center">
