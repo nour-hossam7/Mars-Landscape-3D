@@ -761,14 +761,6 @@ Mission Complete
 
 ---
 
-## 📸 Screenshots
-
-Add your game screenshots inside a folder such as:
-
-```text
-Assets/Documentation/Screenshots/
-```
-
 Then create a GitHub folder named:
 
 ```text
