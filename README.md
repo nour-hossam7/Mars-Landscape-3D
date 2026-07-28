@@ -761,6 +761,20 @@ Mission Complete
 
 ---
 
+# 🎬 Watch the Gameplay
+
+<div align="center">
+
+## ▶ **Gameplay Demo**
+
+### https://drive.google.com/file/d/1IMEw5R4txxGnLSlAzwBmtiF4tDVj_gxt/view?usp=sharing
+
+Experience the complete **Cosmic Echo** gameplay, featuring exploration, combat, boss battles, enemy AI, mission progression, camera switching, and the final victory sequence.
+
+</div>
+
+---
+
 ## 👩‍💻 Developer
 
 <div align="center">
